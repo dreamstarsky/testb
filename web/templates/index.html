@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>雾霾探测系统</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <h1>雾霾探测系统</h1>
+        <p id="status-text" class="status-text" aria-live="polite">正在准备数据...</p>
+        <p id="geo-hint" class="status-hint hidden"></p>
+      </div>
+      <div class="hero-actions">
+        <button id="locate-btn" type="button">重新定位</button>
+      </div>
+    </header>
+
+    <section id="manual-panel" class="card utility-card">
+      <div class="card-head">
+        <p class="label">城市操作</p>
+        <p class="muted">支持手动输入、网络定位和 GPS 定位</p>
+      </div>
+      <form id="manual-form" class="manual-form">
+        <select id="action-select" aria-label="选择操作方式">
+          <option value="manual">手动输入城市</option>
+          <option value="ip">网络定位</option>
+          <option value="gps">GPS 定位</option>
+        </select>
+        <input id="city-input" type="text" inputmode="search" autocomplete="address-level2" placeholder="输入城市名，例如：北京、上海、广州">
+        <button id="city-submit" type="submit">执行</button>
+      </form>
+    </section>
+
+    <section class="grid">
+      <article class="card city-card">
+        <p class="label">当前城市</p>
+        <h2 id="city-name">--</h2>
+        <p id="city-meta" class="muted">等待定位</p>
+      </article>
+
+      <article class="card weather-card">
+        <div class="card-head">
+          <p class="label">实时天气</p>
+          <p id="weather-text" class="badge">--</p>
+        </div>
+        <div class="metric-row">
+          <div>
+            <p class="metric" id="weather-temp">--</p>
+            <p class="muted">当前温度</p>
+          </div>
+          <div>
+            <p class="metric metric-small" id="weather-feels-like">--</p>
+            <p class="muted">体感温度</p>
+          </div>
+        </div>
+        <div class="detail-grid">
+          <div><span>湿度</span><strong id="weather-humidity">--</strong></div>
+          <div><span>风向</span><strong id="weather-wind-dir">--</strong></div>
+          <div><span>风速</span><strong id="weather-wind-speed">--</strong></div>
+          <div><span>风力</span><strong id="weather-wind-scale">--</strong></div>
+        </div>
+      </article>
+
+      <article id="air-card" class="card air-card air-level-default">
+        <div class="card-head">
+          <p class="label">空气质量</p>
+          <p id="air-category" class="badge">--</p>
+        </div>
+        <div class="metric-row">
+          <div>
+            <p class="metric" id="air-aqi">--</p>
+            <p class="muted">AQI</p>
+          </div>
+          <div>
+            <p class="metric metric-small" id="air-pollutant">--</p>
+            <p class="muted">首要污染物</p>
+          </div>
+        </div>
+        <p id="air-advice" class="advice">--</p>
+        <p id="air-station" class="muted">监测站：--</p>
+      </article>
+    </section>
+
+    <section class="charts">
+      <article class="card chart-card">
+        <div class="card-head">
+          <p class="label">24小时温度</p>
+          <p class="muted">折线图</p>
+        </div>
+        <div id="temp-chart" class="chart"></div>
+      </article>
+
+      <article class="card chart-card">
+        <div class="card-head">
+          <p class="label">24小时湿度</p>
+          <p class="muted">折线图</p>
+        </div>
+        <div id="humidity-chart" class="chart"></div>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <p id="updated-at">更新时间：--</p>
+      <p>数据来源：和风天气</p>
+      <p>构建版本：{{ .BuildVersion }}</p>
+    </footer>
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

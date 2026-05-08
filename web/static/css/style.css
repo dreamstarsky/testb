@@ -1,0 +1,355 @@
+:root {
+  color-scheme: light;
+  --bg: #f6f9fd;
+  --bg-accent: #e9f3ff;
+  --panel: rgba(255, 255, 255, 0.72);
+  --panel-border: rgba(255, 255, 255, 0.88);
+  --text: #18314b;
+  --muted: #748aa3;
+  --primary: #1f8fff;
+  --primary-soft: rgba(31, 143, 255, 0.14);
+  --success-soft: rgba(84, 201, 165, 0.16);
+  --warn-soft: rgba(255, 192, 92, 0.18);
+  --danger-soft: rgba(237, 109, 109, 0.16);
+  --shadow: 0 20px 48px rgba(132, 157, 190, 0.16);
+  --shadow-soft: 0 10px 26px rgba(141, 164, 194, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "Avenir Next", "PingFang SC", "Helvetica Neue", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% 12%, rgba(96, 183, 255, 0.3), transparent 22%),
+    radial-gradient(circle at 88% 14%, rgba(136, 236, 217, 0.22), transparent 18%),
+    linear-gradient(180deg, #fcfeff 0%, var(--bg) 42%, #eff5fb 100%);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+input,
+select,
+.card,
+.hero,
+.badge,
+.status-hint,
+.detail-grid div {
+  border: 1px solid var(--panel-border);
+  background: var(--panel);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  box-shadow: var(--shadow-soft);
+}
+
+button {
+  appearance: none;
+  min-height: 44px;
+  padding: 0.85rem 1.1rem;
+  border-radius: 999px;
+  color: #115ca7;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.64)),
+    linear-gradient(135deg, rgba(55, 165, 255, 0.24), rgba(137, 232, 218, 0.16));
+  touch-action: manipulation;
+}
+
+button.secondary {
+  color: var(--text);
+}
+
+button:disabled {
+  opacity: 0.58;
+}
+
+.page {
+  width: min(100%, 960px);
+  margin: 0 auto;
+  padding: 1rem 1rem 2rem;
+}
+
+@supports (padding: max(0px)) {
+  .page {
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+}
+
+.hero,
+.card {
+  border-radius: 26px;
+}
+
+.hero {
+  display: grid;
+  gap: 1rem;
+  padding: 1.35rem;
+  box-shadow: var(--shadow);
+}
+
+.hero h1,
+.card h2,
+.metric,
+.metric-small,
+.label,
+.muted,
+.advice,
+.footer p {
+  margin: 0;
+}
+
+.hero h1 {
+  font-size: clamp(1.9rem, 6vw, 2.8rem);
+}
+
+.status-text,
+.muted,
+.detail-grid span {
+  color: var(--muted);
+}
+
+.status-text {
+  margin-top: 0.5rem;
+}
+
+.status-text.is-error {
+  color: #bb5a5a;
+}
+
+.status-hint {
+  margin-top: 0.75rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 18px;
+  line-height: 1.5;
+  color: #6e7f92;
+}
+
+.status-hint.is-error {
+  background: rgba(255, 243, 243, 0.78);
+}
+
+.hidden {
+  display: none;
+}
+
+.hero-actions,
+.grid,
+.charts {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.utility-card,
+.grid,
+.charts,
+.footer {
+  margin-top: 1rem;
+}
+
+.card {
+  padding: 1.1rem;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.label {
+  color: #537ea7;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.metric {
+  font-size: clamp(2.4rem, 11vw, 4rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metric-small {
+  font-size: clamp(1.4rem, 7vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: right;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.detail-grid div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0.9rem;
+  border-radius: 16px;
+}
+
+.detail-grid strong,
+.badge {
+  overflow-wrap: anywhere;
+}
+
+.manual-form {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.manual-form input,
+.manual-form select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.9rem 1rem;
+  border-radius: 18px;
+  color: var(--text);
+  outline: none;
+}
+
+.manual-form input::placeholder {
+  color: #90a3ba;
+}
+
+.manual-form input:focus,
+.manual-form select:focus {
+  border-color: rgba(74, 162, 243, 0.72);
+  box-shadow: 0 0 0 4px rgba(64, 162, 255, 0.12);
+}
+
+.advice {
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.chart {
+  width: 100%;
+  height: 260px;
+  margin-top: 0.75rem;
+}
+
+.air-level-good {
+  background:
+    linear-gradient(180deg, rgba(243, 255, 250, 0.9), rgba(229, 249, 240, 0.78)),
+    var(--panel);
+}
+
+.air-level-fair {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 242, 0.92), rgba(255, 244, 214, 0.78)),
+    var(--panel);
+}
+
+.air-level-bad {
+  background:
+    linear-gradient(180deg, rgba(255, 247, 246, 0.92), rgba(255, 230, 228, 0.8)),
+    var(--panel);
+}
+
+.air-level-default {
+  background:
+    linear-gradient(180deg, rgba(250, 253, 255, 0.92), rgba(238, 244, 255, 0.8)),
+    var(--panel);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.2rem 0.2rem 0;
+  font-size: 0.88rem;
+}
+
+@media (min-width: 760px) {
+  .hero {
+    grid-template-columns: 1.8fr auto;
+    align-items: end;
+  }
+
+  .hero-actions {
+    grid-auto-flow: column;
+  }
+
+  .manual-form {
+    grid-template-columns: 180px minmax(0, 1fr) auto;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .charts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding-top: 0.75rem;
+  }
+
+  .hero,
+  .card {
+    border-radius: 18px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .metric-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .metric-small {
+    text-align: left;
+  }
+
+  .detail-grid,
+  .hero-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .chart {
+    height: 220px;
+  }
+}
