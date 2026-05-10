@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"html/template"
 	"log"
 	"net/http"
@@ -60,7 +61,7 @@ func main() {
 
 	go func() {
 		log.Printf("server listening on %s", cfg.Addr)
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("listen: %v", err)
 		}
 	}()
