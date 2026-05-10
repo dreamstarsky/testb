@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -20,14 +22,16 @@ type Config struct {
 }
 
 func Load() (*Config, error) {
-	fileEnv, _ := parseEnvFile(".env")
+	if err := godotenv.Load(".env"); err != nil && !errors.Is(err, os.ErrNotExist) {
+		return nil, fmt.Errorf("load .env: %w", err)
+	}
 
-	addr := value(fileEnv, "ADDR", ":8080")
-	apiKey := value(fileEnv, "QWEATHER_API_KEY", "")
-	token := value(fileEnv, "QWEATHER_TOKEN", "")
-	baseURL := normalizeBaseURL(value(fileEnv, "QWEATHER_BASE_URL", "https://api.qweather.com"))
-	sqlitePath := value(fileEnv, "SQLITE_PATH", filepath.Join("data", "weather.db"))
-	cacheMinutes, err := strconv.Atoi(value(fileEnv, "CACHE_MINUTES", "10"))
+	addr := value("ADDR", ":8080")
+	apiKey := value("QWEATHER_API_KEY", "")
+	token := value("QWEATHER_TOKEN", "")
+	baseURL := normalizeBaseURL(value("QWEATHER_BASE_URL", "https://api.qweather.com"))
+	sqlitePath := value("SQLITE_PATH", filepath.Join("data", "weather.db"))
+	cacheMinutes, err := strconv.Atoi(value("CACHE_MINUTES", "10"))
 	if err != nil || cacheMinutes <= 0 {
 		cacheMinutes = 10
 	}
@@ -46,36 +50,9 @@ func Load() (*Config, error) {
 	}, nil
 }
 
-func parseEnvFile(path string) (map[string]string, error) {
-	content, err := os.ReadFile(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return map[string]string{}, nil
-		}
-		return nil, fmt.Errorf("read env file: %w", err)
-	}
-
-	values := map[string]string{}
-	for _, line := range strings.Split(string(content), "\n") {
-		line = strings.TrimSpace(line)
-		if line == "" || strings.HasPrefix(line, "#") {
-			continue
-		}
-		key, val, ok := strings.Cut(line, "=")
-		if !ok {
-			continue
-		}
-		values[strings.TrimSpace(key)] = strings.Trim(strings.TrimSpace(val), `"`)
-	}
-	return values, nil
-}
-
-func value(fileEnv map[string]string, key, fallback string) string {
+func value(key, fallback string) string {
 	if envVal := strings.TrimSpace(os.Getenv(key)); envVal != "" {
 		return envVal
-	}
-	if fileVal := strings.TrimSpace(fileEnv[key]); fileVal != "" {
-		return fileVal
 	}
 	return fallback
 }
