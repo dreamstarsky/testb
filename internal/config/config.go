@@ -15,10 +15,11 @@ import (
 type Config struct {
 	Addr            string
 	QWeatherAPIKey  string
-	QWeatherToken   string
 	QWeatherBaseURL string
 	SQLitePath      string
 	CacheDuration   time.Duration
+	IpGeoAPIKey     string
+	IpGeoBaseURL    string
 }
 
 func Load() (*Config, error) {
@@ -28,25 +29,27 @@ func Load() (*Config, error) {
 
 	addr := value("ADDR", ":8080")
 	apiKey := value("QWEATHER_API_KEY", "")
-	token := value("QWEATHER_TOKEN", "")
 	baseURL := normalizeBaseURL(value("QWEATHER_BASE_URL", "https://api.qweather.com"))
 	sqlitePath := value("SQLITE_PATH", filepath.Join("data", "weather.db"))
 	cacheMinutes, err := strconv.Atoi(value("CACHE_MINUTES", "10"))
+	ipGeoAPIKey := value("TENCENT_IPGEO_KEY", "")
+	ipGeoBaseURL := normalizeBaseURL(value("TENCENT_IPGEO_BASE_URL", "https://apis.map.qq.com"))
 	if err != nil || cacheMinutes <= 0 {
 		cacheMinutes = 10
 	}
 
-	if apiKey == "" && token == "" {
-		return nil, errors.New("missing QWeather credentials: set QWEATHER_API_KEY or QWEATHER_TOKEN")
+	if apiKey == "" {
+		return nil, errors.New("missing QWeather credentials: set QWEATHER_API_KEY")
 	}
 
 	return &Config{
 		Addr:            addr,
 		QWeatherAPIKey:  apiKey,
-		QWeatherToken:   token,
 		QWeatherBaseURL: baseURL,
 		SQLitePath:      sqlitePath,
 		CacheDuration:   time.Duration(cacheMinutes) * time.Minute,
+		IpGeoAPIKey:     ipGeoAPIKey,
+		IpGeoBaseURL:    ipGeoBaseURL,
 	}, nil
 }
 

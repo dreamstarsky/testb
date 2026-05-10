@@ -19,15 +19,13 @@ import (
 type Client struct {
 	baseURL    string
 	apiKey     string
-	token      string
 	httpClient *http.Client
 }
 
-func NewClient(baseURL, apiKey, token string) *Client {
+func NewClient(baseURL, apiKey string) *Client {
 	return &Client{
 		baseURL: strings.TrimRight(baseURL, "/"),
 		apiKey:  strings.TrimSpace(apiKey),
-		token:   strings.TrimSpace(token),
 		httpClient: &http.Client{
 			Timeout: 12 * time.Second,
 		},
@@ -144,12 +142,9 @@ func (c *Client) getJSON(ctx context.Context, endpoint string, query url.Values,
 	if err != nil {
 		return fmt.Errorf("new request: %w", err)
 	}
-	if c.token != "" {
-		req.Header.Set("Authorization", "Bearer "+c.token)
-	} else if c.apiKey != "" {
+	if c.apiKey != "" {
 		req.Header.Set("X-QW-Api-Key", c.apiKey)
-	}
-	if c.token == "" && c.apiKey == "" {
+	} else {
 		return errors.New("missing qweather credentials")
 	}
 

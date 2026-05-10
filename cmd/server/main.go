@@ -36,8 +36,8 @@ func main() {
 	defer repo.Close()
 
 	// 天气服务
-	client := qweather.NewClient(cfg.QWeatherBaseURL, cfg.QWeatherAPIKey, cfg.QWeatherToken)
-	ipgeoClient := ipgeo.NewClient()
+	client := qweather.NewClient(cfg.QWeatherBaseURL, cfg.QWeatherAPIKey)
+	ipgeoClient := ipgeo.NewClient(cfg.IpGeoAPIKey, cfg.IpGeoBaseURL)
 	svc := service.NewWeatherService(repo, client, ipgeoClient, cfg.CacheDuration)
 
 	// 前端
